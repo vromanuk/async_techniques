@@ -11,9 +11,6 @@ def fib(n: int) -> List[int]:
     return numbers
 
 
-print(fib(10))
-
-
 def fib_gen() -> Generator[int, None, None]:
     current, nxt = 0, 1
     while True:
@@ -22,7 +19,10 @@ def fib_gen() -> Generator[int, None, None]:
         yield current
 
 
-for _ in fib_gen():
-    print(_)
-    if _ > 1000:
-        break
+if __name__ == '__main__':
+    MAX_ELEMENTS = 1000
+    print(fib(10))
+    for _ in fib_gen():
+        print(_)
+        if _ > MAX_ELEMENTS:
+            break
