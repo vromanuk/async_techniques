@@ -21,8 +21,13 @@ def fib_gen() -> Generator[int, None, None]:
 
 if __name__ == '__main__':
     MAX_ELEMENTS = 1000
+    print('Plain fibonacci numbers with while loop')
     print(fib(10))
-    for _ in fib_gen():
+    print('Done')
+    generator_result = fib_gen()
+    print('Fibonacci numbers with generators')
+    for _ in generator_result:
         print(_)
         if _ > MAX_ELEMENTS:
             break
+    print('Done')
