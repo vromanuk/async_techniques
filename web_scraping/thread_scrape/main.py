@@ -11,7 +11,7 @@ def get_html(episode_number: int, text_html: list) -> str:
     resp = requests.get(url)
     resp.raise_for_status()
 
-    text_html.append(resp.text)
+    text_html.append((resp.text, episode_number))
     return 'Done'
 
 
@@ -37,8 +37,8 @@ def get_title_range():
         threads.append(threading.Thread(target=get_html, args=(n, text_html), daemon=True))
     [t.start() for t in threads]
     [t.join() for t in threads]
-    for html in text_html:
-        title = get_title(html, 1)
+    for html, episode in text_html:
+        title = get_title(html, episode)
         print(Fore.WHITE + f'Title found: {title}', flush=True)
 
 
