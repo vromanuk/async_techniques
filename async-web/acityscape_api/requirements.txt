@@ -1,2 +1,7 @@
-flask
-requests
+# Web framework
+quart
+
+# Calling services
+aiohttp
+aiodns
+cchardet

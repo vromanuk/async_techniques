@@ -1,6 +1,6 @@
 import random
-import time
-import requests
+import aiohttp
+import asyncio
 from typing import Tuple
 
 USE_CACHED_DATA = False
@@ -10,17 +10,18 @@ measured_latency_in_sec = [
     0.535646, 0.527148, 0.533472, 0.53351, 0.523462]
 
 
-def get_lat_long(zip_code: str, country: str) -> Tuple[float, float]:
+async def get_lat_long(zip_code: str, country: str) -> Tuple[float, float]:
     key = f'{zip_code}, {country}'
     url = f'http://www.datasciencetoolkit.org/street2coordinates/{key.replace(" ", "+")}'
 
     if USE_CACHED_DATA:
-        time.sleep(random.choice(measured_latency_in_sec))
+        await asyncio.sleep(random.choice(measured_latency_in_sec))
         return 45.50655, -122.733888
     else:
-        resp = requests.get(url)
-        resp.raise_for_status()
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as resp:
+                resp.raise_for_status()
 
-        data = resp.json()
+                data = await resp.json()
         city_data = data.get(f'{zip_code}, {country}', dict())
         return city_data.get('latitude', 0.00), city_data.get('longitude', 0.00)
